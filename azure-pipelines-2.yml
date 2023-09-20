@@ -79,8 +79,8 @@ extends:
     #If useSelfHostedAgents = false: 
     #Provide your prefered Microsoft hosted agent pool image, with which you build tasks will be executed. Default is 'ubuntu-latest'
     #For more image options, check https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#use-a-microsoft-hosted-agent
-    buildPoolImage: 'windows-latest'
+    buildPoolImage: 'ubuntu-latest'
     #If useSelfHostedAgents = true: 
     #Provide the self hosted agent pool name which is shared with your project, you can find the agent pool in project settings
     #If you are not sure about how to find it or the agent pool is not shared with your project, please contact ADOCS team for help
-    selfHostedAgentPoolForBuild: 'Local Agents'
+    #selfHostedAgentPoolForBuild: 'Local Agents'
