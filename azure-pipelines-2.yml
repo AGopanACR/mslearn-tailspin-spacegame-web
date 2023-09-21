@@ -82,10 +82,9 @@ stages:
           - download: current
             artifact: drop
 
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: website'
+          - task: S3Upload@1
             inputs:
-              azureSubscription: 'your-subscription'
-              appType: 'webAppLinux'
-              appName: '$(WebAppNameDev)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+              awsCredentials: 'AWS-IN'
+              regionName: 'us-east-1'
+              bucketName: 'acr-test1-s3'
+              globExpressions: '**'
