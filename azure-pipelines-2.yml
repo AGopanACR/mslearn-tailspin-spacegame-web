@@ -3,26 +3,26 @@ trigger:
 
 variables:
   buildConfiguration: 'Release'
-  releaseBranchName: 'release'
+  wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
+  dotnetSdkVersion: '6.x'
 
 stages:
 - stage: 'Build'
-  displayName: 'Build the web application'
-  jobs: 
+  displayName: 'Build Stage'
+  jobs:
   - job: 'Build'
-    displayName: 'Build job'
+    displayName: 'Build Job'
     pool:
       vmImage: 'ubuntu-20.04'
-      demands:
-      - npm
-
+      depmands:
+        - npm
     variables:
+      buildConfiguration: 'Release'
       wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
       dotnetSdkVersion: '6.x'
-
     steps:
     - task: UseDotNet@2
-      displayName: 'Use .NET SDK $(dotnetSdkVersion)'
+      displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
       inputs:
         version: '$(dotnetSdkVersion)'
 
@@ -58,20 +58,22 @@ stages:
       displayName: 'Publish the project - $(buildConfiguration)'
       inputs:
         command: 'publish'
-        projects: '**/*.csproj'
-        publishWebProjects: false
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-        zipAfterPublish: true
+        projects: '**/*.csproj'
 
-    - publish: '$(Build.ArtifactStagingDirectory)'
-      artifact: drop
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+        artifact: 'buildArtifacts'
+        publishLocation: 'pipeline'
 
 - stage: 'Dev'
-  displayName: 'Deploy to the dev environment'
+  displayName: 'Deployment Stage'
   dependsOn: Build
-  condition:  succeeded()
+  condition: succeeded()
   jobs:
   - deployment: Deploy
+    displayName: 'Deployment Job'
     pool:
       vmImage: 'ubuntu-20.04'
     environment: dev
@@ -83,6 +85,7 @@ stages:
           steps:
           - download: current
             artifact: drop
+
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
