@@ -85,6 +85,7 @@ stages:
             inputs:
               awsCredentials: 'AWS-IN'
               regionName: 'us-east-1'
-              bucketName: 'acr-test1-s3'
+              bucketName: 'acr-space-game-test'
               sourceFolder: '/home/vsts/work/1/buildArtifacts'
-              globExpressions: '*'  
+              globExpressions: '*'
+              createBucket: true
