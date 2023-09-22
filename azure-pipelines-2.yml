@@ -81,11 +81,10 @@ stages:
           steps:
           - download: current
             artifact: 'buildArtifacts'
-
           - task: S3Upload@1
             inputs:
               awsCredentials: 'AWS-IN'
               regionName: 'us-east-1'
               bucketName: 'acr-test1-s3'
               sourceFolder: '/home/vsts/work/1/buildArtifacts'
-              globExpressions: 'buildArtifacts'
+              globExpressions: '*'
