@@ -87,4 +87,4 @@ stages:
               regionName: 'us-east-1'
               bucketName: 'acr-test1-s3'
               sourceFolder: '/home/vsts/work/1/buildArtifacts'
-              globExpressions: '*'
+              globExpressions: '*' 
